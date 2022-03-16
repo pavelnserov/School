@@ -1,0 +1,59 @@
+- name: Task 3
+  hosts: nodes
+
+  tasks:
+     - name: 1. biosdevname ?
+       lineinfile:
+         dest: /home/vagrant/grub
+         regexp: '^(GRUB_CMDLINE_LINUX=.*)biosdevname(.*)$'
+         state: absent
+       check_mode: yes
+       changed_when: false
+       register: flag
+
+     - name: 2. Add biosdevname=0
+       lineinfile:
+         dest: /home/vagrant/grub
+         regexp: '^(.*)GRUB_CMDLINE_LINUX="(.*)$'
+         backrefs: yes
+         backup: yes
+         line: '\1GRUB_CMDLINE_LINUX="biosdevname=0 \2'
+       when: not flag.found
+
+     - name: 3. Замена
+       lineinfile:
+         path: /home/vagrant/grub
+         regexp: '^(GRUB_CMDLINE_LINUX=.*)biosdevname=1(.*)$'
+         line: '\1biosdevname=0\2'
+         backrefs: yes
+       when: flag.found
+
+     - name: 4. net.ifnames ?
+       lineinfile:
+         dest: /home/vagrant/grub
+         regexp: '^(GRUB_CMDLINE_LINUX=.*)net.ifnames(.*)$'
+         state: absent
+       check_mode: yes
+       changed_when: false
+       register: flag
+
+     - name: 5. Add net.ifnames=0
+       lineinfile:
+         dest: /home/vagrant/grub
+         regexp: '^(.*)GRUB_CMDLINE_LINUX="(.*)$'
+         backrefs: yes
+         backup: yes
+         line: '\1GRUB_CMDLINE_LINUX="net.ifnames=0 \2'
+       when: not flag.found
+
+     - name: 6. Замена
+       lineinfile:
+         path: /home/vagrant/grub
+         regexp: '^(GRUB_CMDLINE_LINUX=.*)net.ifnames=1(.*)$'
+         line: '\1net.ifnames=0\2'
+         backrefs: yes
+       when: flag.found
+
+  handlers:
+    - name: grub2-mkconfig 
+      command: grub2-mkconfig 
