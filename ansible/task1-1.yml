@@ -22,7 +22,7 @@
          group: apache
          mode: 0644 
 
-     - name: check if firewalld started
+     - name: check firewalld status
        service:
          name: firewalld
          state: started 
