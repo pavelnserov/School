@@ -1,10 +1,13 @@
+---
 - name: Task 3
   hosts: nodes
+  vars:
+    remote_file: /etc/default/grub
 
   tasks:
      - name: 1. biosdevname ?
        lineinfile:
-         dest: /home/vagrant/grub
+         dest: "{{ remote_file }}"
          regexp: '^(GRUB_CMDLINE_LINUX=.*)biosdevname(.*)$'
          state: absent
        check_mode: yes
@@ -13,24 +16,28 @@
 
      - name: 2. Add biosdevname=0
        lineinfile:
-         dest: /home/vagrant/grub
+         dest: "{{ remote_file }}"
          regexp: '^(.*)GRUB_CMDLINE_LINUX="(.*)$'
          backrefs: yes
          backup: yes
          line: '\1GRUB_CMDLINE_LINUX="biosdevname=0 \2'
        when: not flag.found
+       notify:
+         - grub2-mkconfig
 
      - name: 3. Замена
        lineinfile:
-         path: /home/vagrant/grub
+         path: "{{ remote_file }}"
          regexp: '^(GRUB_CMDLINE_LINUX=.*)biosdevname=1(.*)$'
          line: '\1biosdevname=0\2'
          backrefs: yes
        when: flag.found
+       notify:
+         - grub2-mkconfig
 
      - name: 4. net.ifnames ?
        lineinfile:
-         dest: /home/vagrant/grub
+         dest: "{{ remote_file }}"
          regexp: '^(GRUB_CMDLINE_LINUX=.*)net.ifnames(.*)$'
          state: absent
        check_mode: yes
@@ -39,20 +46,24 @@
 
      - name: 5. Add net.ifnames=0
        lineinfile:
-         dest: /home/vagrant/grub
+         dest: "{{ remote_file }}"
          regexp: '^(.*)GRUB_CMDLINE_LINUX="(.*)$'
          backrefs: yes
          backup: yes
          line: '\1GRUB_CMDLINE_LINUX="net.ifnames=0 \2'
        when: not flag.found
+       notify:
+         - grub2-mkconfig
 
      - name: 6. Замена
        lineinfile:
-         path: /home/vagrant/grub
+         path: "{{ remote_file }}"
          regexp: '^(GRUB_CMDLINE_LINUX=.*)net.ifnames=1(.*)$'
          line: '\1net.ifnames=0\2'
          backrefs: yes
        when: flag.found
+       notify:
+         - grub2-mkconfig
 
   handlers:
     - name: grub2-mkconfig 

@@ -1,3 +1,4 @@
+---
 - name: Task 2
   hosts: nodes
 
