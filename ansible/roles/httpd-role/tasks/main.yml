@@ -1,0 +1,36 @@
+---
+# tasks file for httpd-role
+- name: Install httpd
+  package:
+    name: httpd
+    state: present
+    update_cache: yes
+
+- name: Start httpd
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: httpd
+
+- name: Creating index /var/www/html/index.html
+  copy:
+    dest: "{{ www_root }}/index.html"
+    content: "Welcome to my web server. Node name: {{ ansible_hostname }} Contact {{ system_manager }} if anything is wrong"
+    owner: apache
+    group: apache
+    mode: 0644
+
+- name: check firewalld status
+  service:
+     name: firewalld
+     state: started
+     enabled: yes
+
+- name: permit http
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+  notify:
+  - Restart firewalld
+

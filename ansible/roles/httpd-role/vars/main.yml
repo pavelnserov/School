@@ -1,0 +1,3 @@
+---
+# vars file for httpd-role
+www_root: /var/www/html

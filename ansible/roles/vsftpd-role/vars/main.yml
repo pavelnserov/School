@@ -1,0 +1,4 @@
+---
+# vars file for vsftpd-role
+ftp_conf: /etc/vsftpd/vsftpd.conf
+ftp_root: /var/ftp/pub/

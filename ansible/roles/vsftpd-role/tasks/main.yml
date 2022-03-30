@@ -1,0 +1,70 @@
+---
+# tasks file for vsftpd-role
+- name: Install vsftpd
+  package:
+    name: vsftpd
+    state: present
+    update_cache: yes
+
+- name: Start & enable startup vsftpd
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: vsftpd
+
+- name: Configuring
+  template:
+    src: vsftpd.conf
+    dest: "{{ ftp_conf }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+   - Restart vsftpd
+
+- name: install policy core utils
+  yum:
+    name: policycoreutils-python-utils
+    state: present
+
+- name: ftpd_anon_write on
+  ansible.posix.seboolean:
+    name: ftpd_anon_write
+    state: yes
+    persistent: yes
+
+- name: /upload
+  ansible.builtin.file:
+    path: "{{ ftp_root }}/upload"
+    state: directory
+
+- name: set owner
+  file:
+    dest: "{{ ftp_root }}"
+    owner: ftp
+    group: ftp
+    recurse: yes
+    mode: u=rx,g=rx,o=rx
+
+- name: /upload perm
+  file:
+    dest: "{{ ftp_root }}/upload"
+    owner: ftp
+    group: ftp
+    recurse: yes
+    mode: 0755
+
+- name: check firewalld status
+  service:
+     name: firewalld
+     state: started
+     enabled: yes
+
+- name: permit ftp
+  firewalld:
+    service: ftp
+    permanent: yes
+    state: enabled
+  notify:
+  - Restart firewalld
+

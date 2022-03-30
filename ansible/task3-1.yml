@@ -1,0 +1,6 @@
+---
+- name: Task 3.1
+  hosts: nodes
+  roles:
+  - role: httpd-role
+    system_manager: pavel@example.com

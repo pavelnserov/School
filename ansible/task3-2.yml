@@ -1,0 +1,5 @@
+---
+- name: Task 3.2
+  hosts: nodes
+  roles:
+  - role: vsftpd-role

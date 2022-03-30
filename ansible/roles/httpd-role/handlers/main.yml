@@ -1,0 +1,6 @@
+---
+# handlers file for httpd-role
+- name: Restart firewalld
+  service:
+    name: firewalld
+    state: restarted
