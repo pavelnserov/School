@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  db:
+    image: database
+    build: 
+      context: .
+      dockerfile: ./Dockerfile_database
+    restart: unless-stopped
+    container_name: postgres_database
+    ports:
+      - "5432:5432"
+#    volumes:
+#      - pgsql_data:/var/lib/postgresql
+    env_file:
+      - ./compose.env
+#    environment:
+#      - POSTGRES_PASSWORD - currently in ./compose_up.env
+#      - POSTGRES_DB - currently in ./compose_up.env
+#      - DB_NAME - currently in ./compose_up.env
+    networks:
+      - backend
+
+  back:
+    image: backend
+    build: 
+      context: .
+      dockerfile: ./Dockerfile_backend
+    restart: unless-stopped
+    container_name: backend
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  web:
+    image: frontend
+    build: 
+      context: .
+      dockerfile: ./Dockerfile_front
+    restart: unless-stopped
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - back
+    networks:
+      - frontend
+
+#volumes:
+#  pgsql_data:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
