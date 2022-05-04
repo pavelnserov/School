@@ -1,24 +1,19 @@
-C:\Users\Pavel\kuber>kubectl apply -f deploy.yaml
-The Deployment "deployment" is invalid: spec.template.metadata.labels: Invalid value: map[string]string(nil): `selector` does not match template `labels`
+```bash
+C:\Users\Pavel\kuber>kubectl apply -f deploy.yaml  
+The Deployment "deployment" is invalid: spec.template.metadata.labels: Invalid value: map[string]string(nil): `selector` does not match template `labels`  
 
-C:\Users\Pavel\kuber>kubectl apply -f deploy.yaml
-deployment.apps/deployment created
+C:\Users\Pavel\kuber>kubectl apply -f deploy.yaml  
+deployment.apps/deployment created    
 
-C:\Users\Pavel\kuber>kubectl get pod
-NAME                          READY   STATUS              RESTARTS   AGE
-deployment-7c658794b9-bgnpc   0/1     ContainerCreating   0          4s
-deployment-7c658794b9-qfbt6   0/1     ContainerCreating   0          4s
-nginx                         1/1     Running             0          12m
-web                           1/1     Running             0          19m
-webreplica-x2pqs              1/1     Running             0          9m10s
-
-C:\Users\Pavel\kuber>
-C:\Users\Pavel\kuber>
-C:\Users\Pavel\kuber>
-C:\Users\Pavel\kuber>
-C:\Users\Pavel\kuber>
-C:\Users\Pavel\kuber>
-C:\Users\Pavel\kuber>
+C:\Users\Pavel\kuber>kubectl get pod  
+NAME                          READY   STATUS              RESTARTS   AGE  
+deployment-7c658794b9-bgnpc   0/1     ContainerCreating   0          4s  
+deployment-7c658794b9-qfbt6   0/1     ContainerCreating   0          4s  
+nginx                         1/1     Running             0          12m  
+web                           1/1     Running             0          19m  
+webreplica-x2pqs              1/1     Running             0          9m10s  
+  
+C:\Users\Pavel\kuber>  
 C:\Users\Pavel\kuber>
 C:\Users\Pavel\kuber>
 C:\Users\Pavel\kuber>kubectl get pod
@@ -50,3 +45,4 @@ web                           1/1     Running   0          21m
 webreplica-x2pqs              1/1     Running   0          11m
 
 C:\Users\Pavel\kuber>
+```
