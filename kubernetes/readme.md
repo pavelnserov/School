@@ -1,8 +1,5 @@
 ```bash
 C:\Users\Pavel\kuber>kubectl apply -f deploy.yaml  
-The Deployment "deployment" is invalid: spec.template.metadata.labels: Invalid value: map[string]string(nil): `selector` does not match template `labels`  
-
-C:\Users\Pavel\kuber>kubectl apply -f deploy.yaml  
 deployment.apps/deployment created    
 
 C:\Users\Pavel\kuber>kubectl get pod  
